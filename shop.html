@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Магазин</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 16px;
+            padding-bottom: 100px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--tg-theme-secondary-bg-color, #f7f7f7);
+            padding: 20px 16px;
+            margin: -16px -16px 16px -16px;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .header-subtitle {
+            text-align: center;
+            opacity: 0.6;
+            font-size: 14px;
+        }
+
+        /* Balance Card */
+        .balance-card {
+            background: linear-gradient(135deg, var(--tg-theme-button-color, #3390ec) 0%, #667eea 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(51, 144, 236, 0.3);
+        }
+
+        .balance-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+
+        .balance-amount {
+            font-size: 36px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .balance-icon {
+            font-size: 32px;
+        }
+
+        .user-info {
+            margin-top: 12px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Items Grid */
+        .items-grid {
+            display: grid;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        /* Item Card */
+        .item-card {
+            background: var(--tg-theme-secondary-bg-color, #f7f7f7);
+            border-radius: 16px;
+            padding: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .item-card:active {
+            transform: scale(0.98);
+        }
+
+        .item-card.bought {
+            border-color: #4caf50;
+            opacity: 0.8;
+        }
+
+        .item-card.affordable {
+            border-color: var(--tg-theme-button-color, #3390ec);
+        }
+
+        .item-image {
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+        }
+
+        .item-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .item-badge.bought {
+            background: #4caf50;
+            color: white;
+        }
+
+        .item-content {
+            padding: 16px;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .item-title {
+            font-size: 18px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .item-description {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .item-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--tg-theme-button-color, #3390ec);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .item-price-icon {
+            font-size: 20px;
+        }
+
+        /* Buttons */
+        .buy-btn {
+            background: var(--tg-theme-button-color, #3390ec);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(51, 144, 236, 0.3);
+        }
+
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(51, 144, 236, 0.4);
+        }
+
+        .buy-btn:active {
+            transform: translateY(0);
+        }
+
+        .buy-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .bought-label {
+            color: #4caf50;
+            font-weight: 700;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(51, 144, 236, 0.2);
+            border-top-color: var(--tg-theme-button-color, #3390ec);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 16px;
+            opacity: 0.6;
+        }
+
+        /* Error */
+        .error-banner {
+            background: #ff4444;
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-banner.show {
+            display: flex;
+        }
+
+        .error-icon {
+            font-size: 24px;
+        }
+
+        .error-text {
+            flex: 1;
+            font-size: 14px;
+        }
+
+        /* Success Banner */
+        .success-banner {
+            background: #4caf50;
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            animation: slideDown 0.3s ease;
+        }
+
+        .success-banner.show {
+            display: flex;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .empty-description {
+            font-size: 14px;
+            opacity: 0.6;
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: var(--tg-theme-secondary-bg-color, #f7f7f7);
+            border: 2px solid transparent;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .filter-tab.active {
+            background: var(--tg-theme-button-color, #3390ec);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border-color: var(--tg-theme-button-color, #3390ec);
+        }
+
+        /* Stats */
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--tg-theme-secondary-bg-color, #f7f7f7);
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--tg-theme-button-color, #3390ec);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.6;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🛍️ Магазин</h1>
+            <div class="header-subtitle">Выберите товары для покупки</div>
+        </div>
+
+        <!-- Success Banner -->
+        <div class="success-banner" id="successBanner">
+            <span class="error-icon">✅</span>
+            <span class="error-text" id="successText"></span>
+        </div>
+
+        <!-- Error Banner -->
+        <div class="error-banner" id="errorBanner">
+            <span class="error-icon">⚠️</span>
+            <span class="error-text" id="errorText"></span>
+        </div>
+
+        <!-- Balance Card -->
+        <div class="balance-card">
+            <div class="balance-label">Ваш баланс</div>
+            <div class="balance-amount">
+                <span class="balance-icon">💎</span>
+                <span id="balance">0</span>
+            </div>
+            <div class="user-info">
+                <div>🆔 ID: <span id="userId">-</span></div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-value" id="totalItems">0</div>
+                <div class="stat-label">Всего товаров</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="purchasedItems">0</div>
+                <div class="stat-label">Куплено</div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <div class="filter-tab active" onclick="filterItems('all')">
+                Все товары
+            </div>
+            <div class="filter-tab" onclick="filterItems('available')">
+                Доступные
+            </div>
+            <div class="filter-tab" onclick="filterItems('bought')">
+                Купленные
+            </div>
+        </div>
+
+        <!-- Section Title -->
+        <div class="section-title">
+            <span>📦</span>
+            <span>Каталог товаров</span>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Загрузка товаров...</div>
+        </div>
+
+        <!-- Items Grid -->
+        <div id="items" class="items-grid" style="display: none;"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-icon">🛒</div>
+            <div class="empty-title">Товары не найдены</div>
+            <div class="empty-description">Попробуйте изменить фильтр</div>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация Telegram WebApp
+        let tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        // Применяем тему Telegram
+        document.body.style.background = tg.themeParams.bg_color || '#ffffff';
+
+        // Получаем параметры из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('user_id');
+        const customId = urlParams.get('custom_id');
+        let tokens = parseInt(urlParams.get('tokens')) || 0;
+        const lang = urlParams.get('lang') || 'ru';
+
+        // Обновляем баланс
+        document.getElementById('balance').textContent = tokens.toLocaleString();
+        document.getElementById('userId').textContent = customId || userId;
+
+        // Товары магазина (ЗДЕСЬ МОЖНО ДОБАВЛЯТЬ НОВЫЕ ТОВАРЫ)
+        let items = [
+            {
+                id: 'fps_file',
+                icon: '📁',
+                title: 'Файл 90 FPS',
+                description: 'Специальный файл для повышения FPS в Free Fire. Улучшает производительность игры.',
+                price: 1000,
+                category: 'files',
+                gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+            },
+            {
+                id: 'pc_settings',
+                icon: '🖥',
+                title: 'Мои настройки на ПК',
+                description: 'Оптимальные настройки для игры на ПК. Проверенные настройки для максимальной производительности.',
+                price: 1240,
+                category: 'settings',
+                gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+            },
+            {
+                id: 'smooth_sens',
+                icon: '⚙️',
+                title: 'Способ плавной сенсы ПК',
+                description: 'Методика настройки чувствительности мыши для плавного управления.',
+                price: 1100,
+                category: 'settings',
+                gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
+            },
+            {
+                id: 'phone_optimization',
+                icon: '📱',
+                title: 'Оптимизация телефона',
+                description: 'Полная оптимизация вашего телефона для Free Fire. Увеличение FPS и уменьшение задержек.',
+                price: 1450,
+                category: 'optimization',
+                gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+            },
+            {
+                id: 'registry',
+                icon: '🔧',
+                title: 'Регедиты для сенсы',
+                description: 'Файлы реестра Windows для улучшения отклика мыши.',
+                price: 500,
+                category: 'files',
+                gradient: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)'
+            },
+            {
+                id: 'phone_settings',
+                icon: '📱',
+                title: 'Настройки телефона до идеала',
+                description: 'Идеальные настройки телефона для профессиональной игры.',
+                price: 1400,
+                category: 'settings',
+                gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+            }
+        ];
+
+        // Купленные товары (загружаются с сервера или из локального хранилища)
+        let purchasedItems = [];
+
+        // Текущий фильтр
+        let currentFilter = 'all';
+
+        // Отображаем товары
+        function renderItems() {
+            const container = document.getElementById('items');
+            container.innerHTML = '';
+
+            let filteredItems = items;
+            if (currentFilter === 'available') {
+                filteredItems = items.filter(item => !purchasedItems.includes(item.id) && tokens >= item.price);
+            } else if (currentFilter === 'bought') {
+                filteredItems = items.filter(item => purchasedItems.includes(item.id));
+            }
+
+            if (filteredItems.length === 0) {
+                document.getElementById('emptyState').style.display = 'block';
+                document.getElementById('items').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('items').style.display = 'grid';
+
+            filteredItems.forEach(item => {
+                const isBought = purchasedItems.includes(item.id);
+                const canBuy = tokens >= item.price && !isBought;
+
+                const card = document.createElement('div');
+                card.className = 'item-card' + (isBought ? ' bought' : (canBuy ? ' affordable' : ''));
+                
+                card.innerHTML = `
+                    <div class="item-image" style="background: ${item.gradient}">
+                        <span style="font-size: 64px;">${item.icon}</span>
+                        ${isBought ? '<div class="item-badge bought">✓ Куплено</div>' : 
+                         (canBuy ? '<div class="item-badge">Доступно</div>' : '')}
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-title">${item.title}</div>
+                        </div>
+                        <div class="item-description">${item.description}</div>
+                        <div class="item-footer">
+                            <div class="item-price">
+                                <span class="item-price-icon">💎</span>
+                                <span>${item.price.toLocaleString()}</span>
+                            </div>
+                            ${isBought ? 
+                                '<div class="bought-label"><span>✓</span><span>Куплено</span></div>' :
+                                `<button class="buy-btn" ${!canBuy ? 'disabled' : ''} onclick="buyItem('${item.id}', ${item.price}, '${item.title}')">
+                                    ${canBuy ? 'Купить' : 'Недостаточно 💎'}
+                                </button>`
+                            }
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+
+            // Обновляем статистику
+            document.getElementById('totalItems').textContent = items.length;
+            document.getElementById('purchasedItems').textContent = purchasedItems.length;
+
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('items').style.display = 'grid';
+        }
+
+        // Фильтрация товаров
+        window.filterItems = function(filter) {
+            currentFilter = filter;
+            
+            // Обновляем активную вкладку
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderItems();
+        };
+
+        // Покупка товара
+        window.buyItem = function(itemId, price, title) {
+            if (tokens < price) {
+                showError('Недостаточно токенов для покупки!');
+                tg.HapticFeedback.notificationOccurred('error');
+                return;
+            }
+
+            if (purchasedItems.includes(itemId)) {
+                showError('Вы уже купили этот товар!');
+                tg.HapticFeedback.notificationOccurred('error');
+                return;
+            }
+
+            // Подтверждение покупки
+            const confirmText = `Купить "${title}" за ${price.toLocaleString()} 💎?`;
+            
+            tg.showConfirm(confirmText, (confirmed) => {
+                if (confirmed) {
+                    // Отправляем данные в бота
+                    tg.sendData(JSON.stringify({
+                        action: 'buy',
+                        item_id: itemId,
+                        price: price,
+                        title: title,
+                        user_id: userId
+                    }));
+
+                    // Обновляем локально
+                    tokens -= price;
+                    purchasedItems.push(itemId);
+                    document.getElementById('balance').textContent = tokens.toLocaleString();
+                    renderItems();
+
+                    showSuccess(`✅ "${title}" успешно куплен!`);
+                    tg.HapticFeedback.notificationOccurred('success');
+                }
+            });
+        };
+
+        // Показать ошибку
+        function showError(message) {
+            const errorBanner = document.getElementById('errorBanner');
+            const errorText = document.getElementById('errorText');
+            errorText.textContent = message;
+            errorBanner.classList.add('show');
+            setTimeout(() => {
+                errorBanner.classList.remove('show');
+            }, 3000);
+        }
+
+        // Показать успех
+        function showSuccess(message) {
+            const successBanner = document.getElementById('successBanner');
+            const successText = document.getElementById('successText');
+            successText.textContent = message;
+            successBanner.classList.add('show');
+            setTimeout(() => {
+                successBanner.classList.remove('show');
+            }, 3000);
+        }
+
+        // Загружаем товары
+        setTimeout(() => {
+            renderItems();
+        }, 500);
+
+        // Настраиваем главную кнопку Telegram
+        tg.MainButton.setText('Закрыть магазин');
+        tg.MainButton.show();
+        tg.MainButton.onClick(() => {
+            tg.close();
+        });
+    </script>
+</body>
+</html>
