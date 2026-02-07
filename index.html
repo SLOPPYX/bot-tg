@@ -1,43 +1,35 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Магазин</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
             color: #ffffff;
             min-height: 100vh;
-            padding: 0;
         }
-
-        .container {
-            padding: 20px;
-            padding-bottom: 100px;
-        }
-
-        /* Шапка */
+        
+        .container { padding: 20px; padding-bottom: 100px; }
+        
         .header {
             background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
             padding: 30px 20px;
-            margin: -20px -20px 24px -20px;
-            border-radius: 0 0 30px 30px;
+            margin: -20px -20px 24px;
+            border-radius: 0 0 25px 25px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.9);
             text-align: center;
             position: relative;
             overflow: hidden;
         }
-
-        .header::before {
+        
+        .header::after {
             content: '';
             position: absolute;
             top: 0;
@@ -47,47 +39,33 @@
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
             animation: shine 4s infinite;
         }
-
+        
         @keyframes shine {
             to { left: 100%; }
         }
-
+        
         .header h1 {
-            font-size: 38px;
+            font-size: 36px;
             font-weight: 900;
-            background: linear-gradient(135deg, #ffffff 0%, #777777 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             position: relative;
             z-index: 1;
-            letter-spacing: 2px;
         }
-
-        .header-subtitle {
-            opacity: 0.5;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-top: 8px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Карточка баланса */
+        
         .balance-card {
             background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            padding: 30px;
-            border-radius: 25px;
+            padding: 28px;
+            border-radius: 24px;
             margin-bottom: 24px;
-            box-shadow: 
-                0 10px 40px rgba(0,0,0,0.7),
-                inset 0 1px 0 rgba(255,255,255,0.1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
             border: 1px solid rgba(255,255,255,0.1);
             position: relative;
             overflow: hidden;
         }
-
+        
         .balance-card::after {
             content: '';
             position: absolute;
@@ -95,117 +73,112 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
             animation: rotate 10s linear infinite;
         }
-
+        
         @keyframes rotate {
             to { transform: rotate(360deg); }
         }
-
+        
         .balance-label {
             font-size: 12px;
             opacity: 0.6;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             position: relative;
             z-index: 1;
         }
-
+        
         .balance-amount {
-            font-size: 52px;
+            font-size: 48px;
             font-weight: 900;
             margin-bottom: 20px;
             position: relative;
             z-index: 1;
         }
-
+        
         .balance-number {
             background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
+        
         .user-info {
             padding-top: 20px;
             border-top: 1px solid rgba(255,255,255,0.1);
             position: relative;
             z-index: 1;
         }
-
-        .user-info-grid {
+        
+        .user-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
-
-        .user-info-item {
+        
+        .user-item {
             background: rgba(255,255,255,0.04);
-            padding: 15px;
-            border-radius: 15px;
+            padding: 14px;
+            border-radius: 14px;
             border: 1px solid rgba(255,255,255,0.08);
         }
-
+        
         .user-label {
             font-size: 10px;
             opacity: 0.5;
             text-transform: uppercase;
-            letter-spacing: 1px;
             margin-bottom: 6px;
         }
-
+        
         .user-value {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
         }
-
-        /* Статистика */
+        
         .stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
             margin-bottom: 24px;
         }
-
+        
         .stat-card {
             background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            padding: 24px;
+            padding: 22px;
             border-radius: 20px;
             text-align: center;
             border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 6px 25px rgba(0,0,0,0.5);
         }
-
+        
         .stat-value {
-            font-size: 40px;
+            font-size: 36px;
             font-weight: 900;
             background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
+        
         .stat-label {
             font-size: 11px;
             opacity: 0.5;
-            margin-top: 8px;
+            margin-top: 6px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
-
-        /* Фильтры */
+        
         .filters {
             display: flex;
             gap: 10px;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
             overflow-x: auto;
         }
-
+        
         .filter-btn {
             padding: 12px 24px;
-            border-radius: 25px;
+            border-radius: 24px;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
             color: rgba(255,255,255,0.6);
@@ -215,139 +188,110 @@
             transition: all 0.3s;
             white-space: nowrap;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
-
+        
         .filter-btn.active {
             background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
             color: #000000;
             border-color: transparent;
-            box-shadow: 0 6px 25px rgba(255,255,255,0.3);
+            box-shadow: 0 4px 20px rgba(255,255,255,0.3);
         }
-
-        /* Товары */
-        .items {
-            display: grid;
-            gap: 24px;
-        }
-
+        
+        .items { display: grid; gap: 20px; }
+        
         .item {
             background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            border-radius: 25px;
+            border-radius: 20px;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.1);
             transition: all 0.3s;
         }
-
+        
         .item.available {
             border-color: rgba(255,255,255,0.25);
-            box-shadow: 0 8px 30px rgba(255,255,255,0.1);
+            box-shadow: 0 4px 20px rgba(255,255,255,0.05);
         }
-
-        .item.bought {
-            border-color: rgba(76,175,80,0.5);
-        }
-
+        
         .item-image {
-            height: 160px;
+            height: 140px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 80px;
+            font-size: 70px;
             position: relative;
         }
-
+        
         .item-badge {
             position: absolute;
-            top: 16px;
-            right: 16px;
-            padding: 8px 16px;
+            top: 12px;
+            right: 12px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
-
+        
         .badge-available {
             background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
-            color: #000000;
+            color: #000;
         }
-
+        
         .badge-bought {
             background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
         }
-
+        
         .badge-unavailable {
             background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
         }
-
-        .item-content {
-            padding: 24px;
-        }
-
-        .item-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .item-description {
-            font-size: 14px;
-            opacity: 0.6;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .item-footer {
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.08);
-        }
-
+        
+        .item-content { padding: 20px; }
+        .item-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .item-description { font-size: 14px; opacity: 0.6; margin-bottom: 16px; }
+        .item-footer { padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); }
+        
         .item-price-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
-
+        
         .item-price {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 900;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
-        /* КНОПКА С ПОДСВЕТКОЙ */
+        
+        /* КНОПКА С МОЩНОЙ ПОДСВЕТКОЙ */
         .buy-btn {
             width: 100%;
-            padding: 18px;
+            padding: 16px;
             border: none;
-            border-radius: 18px;
-            font-size: 16px;
+            border-radius: 16px;
+            font-size: 15px;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
-
+        
         .buy-btn.can-buy {
             background: linear-gradient(135deg, #ffffff 0%, #d0d0d0 100%);
             color: #000000;
-            box-shadow: 
-                0 6px 25px rgba(255,255,255,0.2),
-                0 0 0 0 rgba(255,255,255,0);
+            box-shadow: 0 6px 25px rgba(255,255,255,0.2);
         }
-
-        /* ВОЛНОВОЙ ЭФФЕКТ */
+        
+        /* Волновой эффект */
         .buy-btn.can-buy::before {
             content: '';
             position: absolute;
@@ -358,276 +302,177 @@
             border-radius: 50%;
             background: rgba(255,255,255,0.5);
             transform: translate(-50%, -50%);
-            transition: width 0.8s ease, height 0.8s ease;
+            transition: width 0.6s, height 0.6s;
         }
-
+        
         .buy-btn.can-buy:active::before {
-            width: 500px;
-            height: 500px;
+            width: 400px;
+            height: 400px;
         }
-
-        /* МОЩНАЯ ПОДСВЕТКА ПРИ HOVER */
+        
+        /* МОЩНОЕ СВЕЧЕНИЕ при наведении */
         .buy-btn.can-buy:hover {
-            transform: translateY(-4px);
+            transform: translateY(-3px);
             box-shadow: 
                 0 10px 40px rgba(255,255,255,0.35),
                 0 0 40px rgba(255,255,255,0.25),
-                0 0 80px rgba(255,255,255,0.15),
-                inset 0 1px 0 rgba(255,255,255,0.5);
+                0 0 80px rgba(255,255,255,0.1);
         }
-
-        .buy-btn.can-buy:active {
-            transform: translateY(-2px);
-        }
-
+        
         .buy-btn:disabled {
             background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
             color: rgba(255,255,255,0.3);
             cursor: not-allowed;
         }
-
+        
         .buy-info {
             font-size: 12px;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 8px;
             opacity: 0.6;
         }
-
+        
         .bought-label {
             color: #4caf50;
             font-weight: 800;
-            font-size: 18px;
+            font-size: 16px;
             text-align: center;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
-
-        /* Баннеры */
-        .banner {
-            padding: 18px 20px;
-            border-radius: 18px;
-            margin-bottom: 20px;
-            display: none;
-            align-items: center;
-            gap: 14px;
-            font-weight: 600;
-            animation: slideDown 0.4s;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .banner.show {
-            display: flex;
-        }
-
-        .success {
-            background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
-            box-shadow: 0 8px 25px rgba(76,175,80,0.5);
-        }
-
-        .error {
-            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
-            box-shadow: 0 8px 25px rgba(244,67,54,0.5);
-        }
-
-        /* Загрузка */
+        
         .loading {
             text-align: center;
-            padding: 80px 20px;
+            padding: 60px 20px;
         }
-
+        
         .spinner {
-            width: 60px;
-            height: 60px;
-            border: 5px solid rgba(255,255,255,0.1);
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255,255,255,0.1);
             border-top-color: #ffffff;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 24px;
+            margin: 0 auto 20px;
         }
-
+        
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
-        .empty {
-            text-align: center;
-            padding: 80px 20px;
-            opacity: 0.5;
+        
+        .banner {
+            padding: 16px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 600;
         }
-
-        .section-title {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 24px;
-            letter-spacing: 1px;
-        }
+        
+        .banner.show { display: block; }
+        .success { background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%); }
+        .error { background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%); }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Шапка -->
         <div class="header">
             <h1>🛍️ МАГАЗИН</h1>
-            <div class="header-subtitle">Premium Items</div>
         </div>
-
-        <!-- Баннеры -->
-        <div id="successBanner" class="banner success">
-            <span style="font-size: 28px;">✅</span>
-            <span id="successText"></span>
-        </div>
-        <div id="errorBanner" class="banner error">
-            <span style="font-size: 28px;">⚠️</span>
-            <span id="errorText"></span>
-        </div>
-
-        <!-- Баланс -->
+        
+        <div id="successBanner" class="banner success"></div>
+        <div id="errorBanner" class="banner error"></div>
+        
         <div class="balance-card">
-            <div class="balance-label">💎 Баланс</div>
+            <div class="balance-label">💎 Ваш баланс</div>
             <div class="balance-amount">
                 <span style="font-size: 28px;">💰</span>
-                <span class="balance-number" id="balanceDisplay">0</span>
+                <span class="balance-number" id="balanceNum">0</span>
             </div>
             <div class="user-info">
-                <div class="user-info-grid">
-                    <div class="user-info-item">
-                        <div class="user-label">🆔 ID</div>
-                        <div class="user-value" id="customIdDisplay">-</div>
+                <div class="user-grid">
+                    <div class="user-item">
+                        <div class="user-label">🆔 Ваш ID</div>
+                        <div class="user-value" id="customIdVal">—</div>
                     </div>
-                    <div class="user-info-item">
+                    <div class="user-item">
                         <div class="user-label">📱 Telegram</div>
-                        <div class="user-value" id="telegramIdDisplay">-</div>
+                        <div class="user-value" id="telegramIdVal">—</div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Статистика -->
+        
         <div class="stats">
             <div class="stat-card">
-                <div class="stat-value" id="totalItems">0</div>
+                <div class="stat-value" id="totalVal">0</div>
                 <div class="stat-label">Товаров</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" id="boughtItems">0</div>
+                <div class="stat-value" id="boughtVal">0</div>
                 <div class="stat-label">Куплено</div>
             </div>
         </div>
-
-        <!-- Фильтры -->
+        
         <div class="filters">
-            <div class="filter-btn active" onclick="setFilter('all')">Все</div>
-            <div class="filter-btn" onclick="setFilter('available')">Доступные</div>
-            <div class="filter-btn" onclick="setFilter('bought')">Купленные</div>
+            <div class="filter-btn active" onclick="applyFilter('all')">Все</div>
+            <div class="filter-btn" onclick="applyFilter('available')">Доступные</div>
+            <div class="filter-btn" onclick="applyFilter('bought')">Купленные</div>
         </div>
-
-        <!-- Заголовок -->
-        <div class="section-title">📦 Каталог</div>
-
-        <!-- Загрузка -->
+        
         <div id="loading" class="loading">
             <div class="spinner"></div>
-            <div>Загрузка...</div>
+            <div>Загрузка товаров...</div>
         </div>
-
-        <!-- Товары -->
-        <div id="itemsContainer" class="items" style="display: none;"></div>
-
-        <!-- Пусто -->
-        <div id="emptyState" class="empty" style="display: none;">
-            <div style="font-size: 80px; margin-bottom: 16px;">🛒</div>
-            <div style="font-size: 20px; font-weight: 700;">Нет товаров</div>
-        </div>
+        
+        <div id="itemsContainer" class="items" style="display:none;"></div>
     </div>
 
     <script>
-        // ========== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ==========
-        let BALANCE = 0;
-        let USER_ID = null;
-        let CUSTOM_ID = null;
-        let PURCHASED = [];
-        let FILTER = 'all';
-
-        const ITEMS = [
-            { id: 'fps', icon: '📁', title: 'Файл 90 FPS', desc: 'Повышение FPS', price: 1000, gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
-            { id: 'pc', icon: '🖥', title: 'Настройки ПК', desc: 'Оптимальные настройки', price: 1240, gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
-            { id: 'sens', icon: '⚙️', title: 'Плавная сенса', desc: 'Методика настройки', price: 1100, gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
-            { id: 'phone_opt', icon: '📱', title: 'Оптимизация', desc: 'Полная оптимизация', price: 1450, gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
-            { id: 'reg', icon: '🔧', title: 'Регедиты', desc: 'Файлы реестра', price: 500, gradient: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)' },
-            { id: 'phone_set', icon: '📱', title: 'Идеальные настройки', desc: 'Настройки до идеала', price: 1400, gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' }
-        ];
-
-        // ========== TELEGRAM WEBAPP ==========
+        console.log('🚀 Инициализация магазина...');
+        
+        // Telegram WebApp
         let tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
 
-        // ========== ЧТЕНИЕ URL ПАРАМЕТРОВ ==========
-        function getUrlParams() {
-            const params = new URLSearchParams(window.location.search);
-            
-            USER_ID = params.get('user_id');
-            CUSTOM_ID = params.get('custom_id');
-            const tokensParam = params.get('tokens');
-            
-            // КРИТИЧЕСКИ ВАЖНО: правильная обработка токенов
-            if (tokensParam !== null && tokensParam !== undefined && tokensParam !== '') {
-                const parsed = parseInt(tokensParam);
-                BALANCE = isNaN(parsed) ? 0 : parsed;
-            } else {
-                BALANCE = 0;
-            }
+        // Глобальные переменные
+        let BALANCE = 0;
+        let USER_ID = '';
+        let CUSTOM_ID = '';
+        let PURCHASED = [];
+        let FILTER = 'all';
 
-            console.log('%c📊 ПАРАМЕТРЫ ПОЛУЧЕНЫ:', 'color: #4caf50; font-weight: bold; font-size: 14px;');
-            console.log('user_id:', USER_ID || '❌ НЕ ПОЛУЧЕН');
-            console.log('custom_id:', CUSTOM_ID || '❌ НЕ ПОЛУЧЕН');
-            console.log('tokens:', BALANCE);
-        }
+        // Товары
+        const ITEMS = [
+            { id: 'fps', icon: '📁', title: 'Файл 90 FPS', desc: 'Повышение FPS в игре', price: 1000, g: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+            { id: 'pc', icon: '🖥', title: 'Настройки ПК', desc: 'Оптимальные параметры', price: 1240, g: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
+            { id: 'sens', icon: '⚙️', title: 'Плавная сенса', desc: 'Идеальная чувствительность', price: 1100, g: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
+            { id: 'opt', icon: '📱', title: 'Оптимизация', desc: 'Полная настройка телефона', price: 1450, g: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
+            { id: 'reg', icon: '🔧', title: 'Регедиты', desc: 'Файлы реестра Windows', price: 500, g: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)' },
+            { id: 'set', icon: '📱', title: 'Настройки телефона', desc: 'Настройка до идеала', price: 1400, g: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' }
+        ];
 
-        // ========== ОБНОВЛЕНИЕ UI ==========
-        function updateUI() {
-            // Баланс
-            const balanceEl = document.getElementById('balanceDisplay');
-            balanceEl.textContent = BALANCE.toLocaleString('ru-RU');
-            console.log('✅ Баланс обновлен:', BALANCE);
+        // Получаем параметры из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        USER_ID = urlParams.get('user_id') || '';
+        CUSTOM_ID = urlParams.get('custom_id') || '';
+        const tokensStr = urlParams.get('tokens') || '0';
+        BALANCE = parseInt(tokensStr) || 0;
 
-            // Custom ID
-            const customIdEl = document.getElementById('customIdDisplay');
-            if (CUSTOM_ID) {
-                customIdEl.textContent = CUSTOM_ID;
-                console.log('✅ Custom ID обновлен:', CUSTOM_ID);
-            } else {
-                customIdEl.textContent = '—';
-                console.log('⚠️ Custom ID не получен');
-            }
+        console.log('📊 Параметры URL:');
+        console.log('  user_id =', USER_ID || 'НЕ ПОЛУЧЕН');
+        console.log('  custom_id =', CUSTOM_ID || 'НЕ ПОЛУЧЕН');
+        console.log('  tokens =', BALANCE);
 
-            // Telegram ID
-            const telegramIdEl = document.getElementById('telegramIdDisplay');
-            if (USER_ID) {
-                const short = USER_ID.length > 9 ? USER_ID.substring(0, 9) + '...' : USER_ID;
-                telegramIdEl.textContent = short;
-                console.log('✅ Telegram ID обновлен:', USER_ID);
-            } else {
-                telegramIdEl.textContent = '—';
-                console.log('⚠️ Telegram ID не получен');
-            }
+        // ОБНОВЛЯЕМ UI СРАЗУ
+        document.getElementById('balanceNum').textContent = BALANCE.toLocaleString('ru-RU');
+        document.getElementById('customIdVal').textContent = CUSTOM_ID || '—';
+        document.getElementById('telegramIdVal').textContent = USER_ID ? (USER_ID.length > 9 ? USER_ID.substring(0,9)+'...' : USER_ID) : '—';
+        document.getElementById('totalVal').textContent = ITEMS.length;
+        document.getElementById('boughtVal').textContent = PURCHASED.length;
 
-            // Статистика
-            document.getElementById('totalItems').textContent = ITEMS.length;
-            document.getElementById('boughtItems').textContent = PURCHASED.length;
-        }
+        console.log('✅ UI обновлён');
 
-        // ========== ОТРИСОВКА ТОВАРОВ ==========
+        // Отрисовка товаров
         function renderItems() {
             const container = document.getElementById('itemsContainer');
             container.innerHTML = '';
@@ -638,15 +483,6 @@
             } else if (FILTER === 'bought') {
                 filtered = ITEMS.filter(i => PURCHASED.includes(i.id));
             }
-
-            if (filtered.length === 0) {
-                document.getElementById('emptyState').style.display = 'block';
-                container.style.display = 'none';
-                return;
-            }
-
-            document.getElementById('emptyState').style.display = 'none';
-            container.style.display = 'grid';
 
             filtered.forEach(item => {
                 const bought = PURCHASED.includes(item.id);
@@ -663,7 +499,7 @@
                 } else if (canBuy) {
                     const after = BALANCE - item.price;
                     footer = `
-                        <button class="buy-btn can-buy" onclick="buy('${item.id}', ${item.price}, '${item.title}')">
+                        <button class="buy-btn can-buy" onclick="buyItem('${item.id}',${item.price},'${item.title}')">
                             Купить ${item.price.toLocaleString('ru-RU')} 💎
                         </button>
                         <div class="buy-info">Останется: ${after.toLocaleString('ru-RU')} 💎</div>
@@ -671,16 +507,16 @@
                 } else {
                     const need = item.price - BALANCE;
                     footer = `
-                        <button class="buy-btn" disabled>Недостаточно</button>
-                        <div class="buy-info" style="color: #ff4444;">Не хватает: ${need.toLocaleString('ru-RU')} 💎</div>
+                        <button class="buy-btn" disabled>Недостаточно токенов</button>
+                        <div class="buy-info" style="color:#ff4444;">Не хватает: ${need.toLocaleString('ru-RU')} 💎</div>
                     `;
                 }
 
                 const div = document.createElement('div');
-                div.className = 'item' + (bought ? ' bought' : canBuy ? ' available' : '');
+                div.className = 'item' + (canBuy ? ' available' : '');
                 div.innerHTML = `
-                    <div class="item-image" style="background: ${item.gradient}">
-                        <span style="position: relative; z-index: 1;">${item.icon}</span>
+                    <div class="item-image" style="background:${item.g}">
+                        <span>${item.icon}</span>
                         ${badge}
                     </div>
                     <div class="item-content">
@@ -688,7 +524,7 @@
                         <div class="item-description">${item.desc}</div>
                         <div class="item-footer">
                             <div class="item-price-row">
-                                <div style="opacity: 0.6;">Цена:</div>
+                                <div style="opacity:0.6;">Цена:</div>
                                 <div class="item-price">
                                     <span>💎</span>
                                     <span>${item.price.toLocaleString('ru-RU')}</span>
@@ -703,25 +539,26 @@
 
             document.getElementById('loading').style.display = 'none';
             container.style.display = 'grid';
+            console.log('✅ Товары отрисованы');
         }
 
-        // ========== ФИЛЬТРАЦИЯ ==========
-        function setFilter(filter) {
-            FILTER = filter;
+        // Фильтрация
+        function applyFilter(f) {
+            FILTER = f;
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
             renderItems();
         }
 
-        // ========== ПОКУПКА ==========
-        function buy(id, price, title) {
+        // Покупка
+        function buyItem(id, price, title) {
             if (BALANCE < price) {
-                showError('Недостаточно токенов!');
+                showBanner('error', 'Недостаточно токенов!');
                 tg.HapticFeedback.notificationOccurred('error');
                 return;
             }
 
-            tg.showConfirm(`Купить "${title}" за ${price.toLocaleString('ru-RU')} 💎?`, (ok) => {
+            tg.showConfirm(`Купить "${title}" за ${price.toLocaleString('ru-RU')} 💎?`, ok => {
                 if (ok) {
                     tg.sendData(JSON.stringify({
                         action: 'buy',
@@ -734,39 +571,31 @@
 
                     BALANCE -= price;
                     PURCHASED.push(id);
-                    updateUI();
+                    
+                    document.getElementById('balanceNum').textContent = BALANCE.toLocaleString('ru-RU');
+                    document.getElementById('boughtVal').textContent = PURCHASED.length;
+                    
                     renderItems();
-
-                    showSuccess(`✅ "${title}" куплен!`);
+                    showBanner('success', `✅ "${title}" успешно куплен!`);
                     tg.HapticFeedback.notificationOccurred('success');
+                    
+                    console.log('✅ Покупка:', title);
                 }
             });
         }
 
-        // ========== БАННЕРЫ ==========
-        function showError(msg) {
-            const el = document.getElementById('errorBanner');
-            document.getElementById('errorText').textContent = msg;
+        // Баннеры
+        function showBanner(type, msg) {
+            const el = document.getElementById(type === 'success' ? 'successBanner' : 'errorBanner');
+            el.textContent = msg;
             el.classList.add('show');
             setTimeout(() => el.classList.remove('show'), 3000);
         }
 
-        function showSuccess(msg) {
-            const el = document.getElementById('successBanner');
-            document.getElementById('successText').textContent = msg;
-            el.classList.add('show');
-            setTimeout(() => el.classList.remove('show'), 3000);
-        }
-
-        // ========== ЗАПУСК ==========
-        console.log('%c🚀 МАГАЗИН ЗАПУСКАЕТСЯ', 'color: #4caf50; font-size: 16px; font-weight: bold;');
-        
-        getUrlParams();
-        updateUI();
-        
+        // Запуск
         setTimeout(() => {
             renderItems();
-            console.log('%c✅ МАГАЗИН ГОТОВ', 'color: #4caf50; font-size: 16px; font-weight: bold;');
+            console.log('✅ Магазин готов!');
         }, 300);
 
         tg.MainButton.setText('Закрыть');
