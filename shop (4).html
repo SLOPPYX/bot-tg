@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        
+        .container { padding: 20px; padding-bottom: 100px; }
+        
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+            padding: 30px 20px;
+            margin: -20px -20px 24px;
+            border-radius: 0 0 25px 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 4s infinite;
+        }
+        
+        @keyframes shine {
+            to { left: 100%; }
+        }
+        
+        .header h1 {
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .balance-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+            padding: 28px;
+            border-radius: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .balance-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+        
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+        
+        .balance-label {
+            font-size: 12px;
+            opacity: 0.6;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .balance-amount {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .balance-number {
+            background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .user-info {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .user-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .user-item {
+            background: rgba(255,255,255,0.04);
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .user-label {
+            font-size: 10px;
+            opacity: 0.5;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        
+        .user-value {
+            font-size: 17px;
+            font-weight: 700;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+            padding: 22px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.5;
+            margin-top: 6px;
+            text-transform: uppercase;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+        }
+        
+        .filter-btn {
+            padding: 12px 24px;
+            border-radius: 24px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+            color: #000000;
+            border-color: transparent;
+            box-shadow: 0 4px 20px rgba(255,255,255,0.3);
+        }
+        
+        .items { display: grid; gap: 20px; }
+        
+        .item {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+        
+        .item.available {
+            border-color: rgba(255,255,255,0.25);
+            box-shadow: 0 4px 20px rgba(255,255,255,0.05);
+        }
+        
+        .item-image {
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 70px;
+            position: relative;
+        }
+        
+        .item-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .badge-available {
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            color: #000;
+        }
+        
+        .badge-bought {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+        }
+        
+        .badge-unavailable {
+            background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+        }
+        
+        .item-content { padding: 20px; }
+        .item-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .item-description { font-size: 14px; opacity: 0.6; margin-bottom: 16px; }
+        .item-footer { padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); }
+        
+        .item-price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .item-price {
+            font-size: 24px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* КНОПКА С МОЩНОЙ ПОДСВЕТКОЙ */
+        .buy-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .buy-btn.can-buy {
+            background: linear-gradient(135deg, #ffffff 0%, #d0d0d0 100%);
+            color: #000000;
+            box-shadow: 0 6px 25px rgba(255,255,255,0.2);
+        }
+        
+        /* Волновой эффект */
+        .buy-btn.can-buy::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .buy-btn.can-buy:active::before {
+            width: 400px;
+            height: 400px;
+        }
+        
+        /* МОЩНОЕ СВЕЧЕНИЕ при наведении */
+        .buy-btn.can-buy:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 10px 40px rgba(255,255,255,0.35),
+                0 0 40px rgba(255,255,255,0.25),
+                0 0 80px rgba(255,255,255,0.1);
+        }
+        
+        .buy-btn:disabled {
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            color: rgba(255,255,255,0.3);
+            cursor: not-allowed;
+        }
+        
+        .buy-info {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 8px;
+            opacity: 0.6;
+        }
+        
+        .bought-label {
+            color: #4caf50;
+            font-weight: 800;
+            font-size: 16px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .banner {
+            padding: 16px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 600;
+        }
+        
+        .banner.show { display: block; }
+        .success { background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%); }
+        .error { background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛍️ МАГАЗИН</h1>
+        </div>
+        
+        <div id="successBanner" class="banner success"></div>
+        <div id="errorBanner" class="banner error"></div>
+        
+        <div class="balance-card">
+            <div class="balance-label">💎 Ваш баланс</div>
+            <div class="balance-amount">
+                <span style="font-size: 28px;">💰</span>
+                <span class="balance-number" id="balanceNum">0</span>
+            </div>
+            <div class="user-info">
+                <div class="user-grid">
+                    <div class="user-item">
+                        <div class="user-label">🆔 Ваш ID</div>
+                        <div class="user-value" id="customIdVal">—</div>
+                    </div>
+                    <div class="user-item">
+                        <div class="user-label">📱 Telegram</div>
+                        <div class="user-value" id="telegramIdVal">—</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalVal">0</div>
+                <div class="stat-label">Товаров</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="boughtVal">0</div>
+                <div class="stat-label">Куплено</div>
+            </div>
+        </div>
+        
+        <div class="filters">
+            <div class="filter-btn active" onclick="applyFilter('all')">Все</div>
+            <div class="filter-btn" onclick="applyFilter('available')">Доступные</div>
+            <div class="filter-btn" onclick="applyFilter('bought')">Купленные</div>
+        </div>
+        
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <div>Загрузка товаров...</div>
+        </div>
+        
+        <div id="itemsContainer" class="items" style="display:none;"></div>
+    </div>
+
+    <script>
+        console.log('🚀 Инициализация магазина...');
+        
+        // Telegram WebApp
+        let tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        // Глобальные переменные
+        let BALANCE = 0;
+        let USER_ID = '';
+        let CUSTOM_ID = '';
+        let PURCHASED = [];
+        let FILTER = 'all';
+
+        // Товары
+        const ITEMS = [
+            { id: 'fps', icon: '📁', title: 'Файл 90 FPS', desc: 'Повышение FPS в игре', price: 1000, g: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+            { id: 'pc', icon: '🖥', title: 'Настройки ПК', desc: 'Оптимальные параметры', price: 1240, g: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
+            { id: 'sens', icon: '⚙️', title: 'Плавная сенса', desc: 'Идеальная чувствительность', price: 1100, g: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
+            { id: 'opt', icon: '📱', title: 'Оптимизация', desc: 'Полная настройка телефона', price: 1450, g: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
+            { id: 'reg', icon: '🔧', title: 'Регедиты', desc: 'Файлы реестра Windows', price: 500, g: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)' },
+            { id: 'set', icon: '📱', title: 'Настройки телефона', desc: 'Настройка до идеала', price: 1400, g: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' }
+        ];
+
+        // Получаем параметры из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        USER_ID = urlParams.get('user_id') || '';
+        CUSTOM_ID = urlParams.get('custom_id') || '';
+        const tokensStr = urlParams.get('tokens') || '0';
+        BALANCE = parseInt(tokensStr) || 0;
+
+        console.log('📊 Параметры URL:');
+        console.log('  user_id =', USER_ID || 'НЕ ПОЛУЧЕН');
+        console.log('  custom_id =', CUSTOM_ID || 'НЕ ПОЛУЧЕН');
+        console.log('  tokens =', BALANCE);
+
+        // ОБНОВЛЯЕМ UI СРАЗУ
+        document.getElementById('balanceNum').textContent = BALANCE.toLocaleString('ru-RU');
+        document.getElementById('customIdVal').textContent = CUSTOM_ID || '—';
+        document.getElementById('telegramIdVal').textContent = USER_ID ? (USER_ID.length > 9 ? USER_ID.substring(0,9)+'...' : USER_ID) : '—';
+        document.getElementById('totalVal').textContent = ITEMS.length;
+        document.getElementById('boughtVal').textContent = PURCHASED.length;
+
+        console.log('✅ UI обновлён');
+
+        // Отрисовка товаров
+        function renderItems() {
+            const container = document.getElementById('itemsContainer');
+            container.innerHTML = '';
+
+            let filtered = ITEMS;
+            if (FILTER === 'available') {
+                filtered = ITEMS.filter(i => !PURCHASED.includes(i.id) && BALANCE >= i.price);
+            } else if (FILTER === 'bought') {
+                filtered = ITEMS.filter(i => PURCHASED.includes(i.id));
+            }
+
+            filtered.forEach(item => {
+                const bought = PURCHASED.includes(item.id);
+                const canBuy = BALANCE >= item.price && !bought;
+
+                let badge = '';
+                if (bought) badge = '<div class="item-badge badge-bought">✓ Куплено</div>';
+                else if (canBuy) badge = '<div class="item-badge badge-available">Доступно</div>';
+                else badge = '<div class="item-badge badge-unavailable">Недоступно</div>';
+
+                let footer = '';
+                if (bought) {
+                    footer = '<div class="bought-label">✓ Куплено</div>';
+                } else if (canBuy) {
+                    const after = BALANCE - item.price;
+                    footer = `
+                        <button class="buy-btn can-buy" onclick="buyItem('${item.id}',${item.price},'${item.title}')">
+                            Купить ${item.price.toLocaleString('ru-RU')} 💎
+                        </button>
+                        <div class="buy-info">Останется: ${after.toLocaleString('ru-RU')} 💎</div>
+                    `;
+                } else {
+                    const need = item.price - BALANCE;
+                    footer = `
+                        <button class="buy-btn" disabled>Недостаточно токенов</button>
+                        <div class="buy-info" style="color:#ff4444;">Не хватает: ${need.toLocaleString('ru-RU')} 💎</div>
+                    `;
+                }
+
+                const div = document.createElement('div');
+                div.className = 'item' + (canBuy ? ' available' : '');
+                div.innerHTML = `
+                    <div class="item-image" style="background:${item.g}">
+                        <span>${item.icon}</span>
+                        ${badge}
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">${item.title}</div>
+                        <div class="item-description">${item.desc}</div>
+                        <div class="item-footer">
+                            <div class="item-price-row">
+                                <div style="opacity:0.6;">Цена:</div>
+                                <div class="item-price">
+                                    <span>💎</span>
+                                    <span>${item.price.toLocaleString('ru-RU')}</span>
+                                </div>
+                            </div>
+                            ${footer}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById('loading').style.display = 'none';
+            container.style.display = 'grid';
+            console.log('✅ Товары отрисованы');
+        }
+
+        // Фильтрация
+        function applyFilter(f) {
+            FILTER = f;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            renderItems();
+        }
+
+        // Покупка
+        function buyItem(id, price, title) {
+            if (BALANCE < price) {
+                showBanner('error', 'Недостаточно токенов!');
+                tg.HapticFeedback.notificationOccurred('error');
+                return;
+            }
+
+            tg.showConfirm(`Купить "${title}" за ${price.toLocaleString('ru-RU')} 💎?`, ok => {
+                if (ok) {
+                    tg.sendData(JSON.stringify({
+                        action: 'buy',
+                        item_id: id,
+                        price: price,
+                        title: title,
+                        user_id: USER_ID,
+                        custom_id: CUSTOM_ID
+                    }));
+
+                    BALANCE -= price;
+                    PURCHASED.push(id);
+                    
+                    document.getElementById('balanceNum').textContent = BALANCE.toLocaleString('ru-RU');
+                    document.getElementById('boughtVal').textContent = PURCHASED.length;
+                    
+                    renderItems();
+                    showBanner('success', `✅ "${title}" успешно куплен!`);
+                    tg.HapticFeedback.notificationOccurred('success');
+                    
+                    console.log('✅ Покупка:', title);
+                }
+            });
+        }
+
+        // Баннеры
+        function showBanner(type, msg) {
+            const el = document.getElementById(type === 'success' ? 'successBanner' : 'errorBanner');
+            el.textContent = msg;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 3000);
+        }
+
+        // Запуск
+        setTimeout(() => {
+            renderItems();
+            console.log('✅ Магазин готов!');
+        }, 300);
+
+        tg.MainButton.setText('Закрыть');
+        tg.MainButton.show();
+        tg.MainButton.onClick(() => tg.close());
+    </script>
+</body>
+</html>
