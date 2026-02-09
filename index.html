@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -607,24 +608,28 @@
             USER_ID = url.searchParams.get('user_id') || '';
             CUSTOM_ID = url.searchParams.get('custom_id') || '';
             const tokensStr = url.searchParams.get('tokens') || '0';
-            const inventoryStr = url.searchParams.get('inventory') || '';
             
             BALANCE = parseInt(tokensStr) || 0;
             
-            // Парсим склад
-            if (inventoryStr) {
+            // Получаем склад из localStorage (сохраняется при покупке)
+            const storageKey = `inventory_${USER_ID}`;
+            const storedInventory = localStorage.getItem(storageKey);
+            
+            if (storedInventory) {
                 try {
-                    INVENTORY = JSON.parse(decodeURIComponent(inventoryStr));
+                    INVENTORY = JSON.parse(storedInventory);
                 } catch (e) {
-                    INVENTORY = inventoryStr.split(',').filter(i => i);
+                    INVENTORY = [];
                 }
+            } else {
+                INVENTORY = [];
             }
 
             console.log('📊 Параметры получены:');
             console.log('  user_id:', USER_ID);
             console.log('  custom_id:', CUSTOM_ID);
             console.log('  balance:', BALANCE);
-            console.log('  inventory:', INVENTORY);
+            console.log('  inventory:', INVENTORY, '(из localStorage)');
         }
 
         // ОБНОВЛЕНИЕ UI
@@ -799,6 +804,11 @@
                     // Локальное обновление
                     BALANCE -= price;
                     INVENTORY.push(name);
+
+                    // Сохраняем склад в localStorage
+                    const storageKey = `inventory_${USER_ID}`;
+                    localStorage.setItem(storageKey, JSON.stringify(INVENTORY));
+                    console.log('💾 Склад сохранён в localStorage:', INVENTORY);
 
                     document.getElementById('balance').textContent = BALANCE.toLocaleString('ru-RU');
 
