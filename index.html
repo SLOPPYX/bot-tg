@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -56,8 +55,8 @@
         }
 
         .container {
-            padding: 20px;
-            padding-bottom: 100px;
+            padding: 15px;
+            padding-bottom: 80px;
             max-width: 600px;
             margin: 0 auto;
         }
@@ -65,22 +64,22 @@
         /* 3 ВКЛАДКИ */
         .tabs {
             display: flex;
-            gap: 8px;
-            margin-bottom: 24px;
-            padding: 6px;
+            gap: 6px;
+            margin-bottom: 15px;
+            padding: 4px;
             background: rgba(255,255,255,0.03);
-            border-radius: 16px;
+            border-radius: 12px;
             border: 1px solid rgba(255,255,255,0.05);
         }
 
         .tab {
             flex: 1;
-            padding: 12px 8px;
-            border-radius: 12px;
+            padding: 10px 6px;
+            border-radius: 10px;
             background: transparent;
             border: none;
             color: rgba(255,255,255,0.5);
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -101,49 +100,30 @@
 
         .balance-card {
             background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            padding: 32px 28px;
-            border-radius: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.7);
             border: 1px solid rgba(255,255,255,0.08);
             position: relative;
             overflow: hidden;
         }
 
-        .balance-card::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
-            animation: rotate 15s linear infinite;
-        }
-
-        @keyframes rotate {
-            to { transform: rotate(360deg); }
-        }
-
         .balance-label {
-            font-size: 11px;
+            font-size: 10px;
             opacity: 0.5;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 12px;
-            position: relative;
-            z-index: 1;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
         }
 
         .balance-amount {
-            font-size: 56px;
+            font-size: 36px;
             font-weight: 900;
-            margin-bottom: 24px;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 15px;
             display: flex;
             align-items: baseline;
-            gap: 8px;
+            gap: 6px;
         }
 
         .balance-number {
@@ -151,11 +131,11 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: -2px;
+            letter-spacing: -1px;
         }
 
         .balance-suffix {
-            font-size: 20px;
+            font-size: 16px;
             opacity: 0.6;
             font-weight: 600;
         }
@@ -163,28 +143,26 @@
         .user-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            position: relative;
-            z-index: 1;
+            gap: 10px;
         }
 
         .user-box {
             background: rgba(255,255,255,0.03);
-            padding: 16px;
-            border-radius: 16px;
+            padding: 12px;
+            border-radius: 12px;
             border: 1px solid rgba(255,255,255,0.06);
         }
 
         .user-label {
-            font-size: 10px;
+            font-size: 9px;
             opacity: 0.4;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .user-value {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
         }
 
@@ -208,48 +186,48 @@
             }
         }
 
+        /* КОМПАКТНЫЕ ТОВАРЫ */
         .items {
             display: grid;
-            gap: 20px;
+            gap: 12px;
         }
 
         .item {
             background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            border-radius: 24px;
+            border-radius: 16px;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.08);
-            transition: all 0.4s;
+            transition: all 0.3s;
         }
 
-        .item:hover {
-            border-color: rgba(255,255,255,0.15);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+        .item:active {
+            transform: scale(0.98);
         }
 
         .item.vip-item {
             border: 2px solid #ffd700;
-            box-shadow: 0 8px 32px rgba(255,215,0,0.2);
+            box-shadow: 0 6px 24px rgba(255,215,0,0.15);
         }
 
+        /* КОМПАКТНЫЙ HEADER */
         .item-header {
-            padding: 100px 20px;
+            padding: 40px 15px;
             text-align: center;
-            font-size: 72px;
+            font-size: 48px;
             position: relative;
         }
 
         .item-icon {
-            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));
         }
 
         .item-badge {
             position: absolute;
-            top: 16px;
-            right: 16px;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 11px;
+            top: 10px;
+            right: 10px;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 9px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -275,51 +253,52 @@
             color: #000;
         }
 
+        /* КОМПАКТНЫЙ BODY */
         .item-body {
-            padding: 28px;
+            padding: 15px;
         }
 
         .item-title {
-            font-size: 24px;
+            font-size: 16px;
             font-weight: 800;
-            margin-bottom: 12px;
+            margin-bottom: 6px;
         }
 
         .item-desc {
-            opacity: 0.6;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 24px;
+            opacity: 0.5;
+            font-size: 11px;
+            line-height: 1.4;
+            margin-bottom: 12px;
         }
 
         .item-price-row {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
             border-bottom: 1px solid rgba(255,255,255,0.06);
         }
 
         .item-price {
-            font-size: 32px;
+            font-size: 22px;
             font-weight: 900;
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: baseline;
         }
 
         .buy-btn {
             width: 100%;
-            padding: 16px;
-            border-radius: 16px;
+            padding: 12px;
+            border-radius: 12px;
             border: none;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .buy-btn.can-buy {
@@ -340,8 +319,8 @@
 
         .buy-info {
             text-align: center;
-            margin-top: 12px;
-            font-size: 13px;
+            margin-top: 8px;
+            font-size: 11px;
             opacity: 0.5;
         }
 
@@ -349,35 +328,57 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            padding: 16px;
+            gap: 8px;
+            padding: 12px;
             background: rgba(76, 175, 80, 0.1);
-            border-radius: 16px;
+            border-radius: 12px;
             border: 1px solid rgba(76, 175, 80, 0.3);
             font-weight: 700;
+            font-size: 13px;
             color: #4CAF50;
+        }
+
+        /* КНОПКА ПОЛУЧИТЬ */
+        .claim-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+            transition: all 0.3s;
+        }
+
+        .claim-btn:active {
+            transform: scale(0.97);
         }
 
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 50px 20px;
         }
 
         .empty-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
+            font-size: 60px;
+            margin-bottom: 15px;
             opacity: 0.3;
         }
 
         .empty-title {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .empty-desc {
             opacity: 0.5;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .toast {
@@ -386,26 +387,27 @@
             left: 50%;
             transform: translateX(-50%);
             background: #1a1a1a;
-            padding: 16px 24px;
-            border-radius: 16px;
+            padding: 14px 20px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             transition: bottom 0.3s;
             z-index: 10000;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .toast.show {
-            bottom: 30px;
+            bottom: 25px;
         }
 
         .toast.success {
-            border: 1px solid #4CAF50;
+            border-color: #4CAF50;
         }
 
         .toast.error {
-            border: 1px solid #f44336;
+            border-color: #f44336;
         }
     </style>
 </head>
@@ -444,7 +446,11 @@
         </div>
 
         <div class="tab-content" id="vip-tab">
-            <div class="items" id="vip-items"></div>
+            <div class="empty-state">
+                <div class="empty-icon">👑</div>
+                <div class="empty-title">VIP раздел</div>
+                <div class="empty-desc">Скоро здесь появятся эксклюзивные товары</div>
+            </div>
         </div>
 
         <div class="tab-content" id="inventory-tab">
@@ -480,15 +486,6 @@
             { id: 'set', icon: '📱', name: 'Настройки телефона до идеала', desc: 'Профессиональная настройка', price: 1400, gradient: 'linear-gradient(135deg, #a8edea, #fed6e3)' }
         ];
 
-        const VIP_ITEMS = [
-            { id: 'v1', icon: '💎', name: 'VIP Настройки Pro Pack', desc: 'Премиальный набор всех настроек + бонусы', price: 5000, gradient: 'linear-gradient(135deg, #ffd700, #ff8c00)', vip: true },
-            { id: 'v2', icon: '🔥', name: 'Премиум пак всех файлов', desc: 'Все файлы + эксклюзивный контент', price: 10000, gradient: 'linear-gradient(135deg, #ff6b6b, #ee5a6f)', vip: true },
-            { id: 'v3', icon: '⚡', name: 'Эксклюзивные регедиты Pro', desc: 'Продвинутые регедиты + поддержка', price: 7500, gradient: 'linear-gradient(135deg, #a8edea, #fed6e3)', vip: true },
-            { id: 'v4', icon: '🎯', name: 'Ultimate сенса пак', desc: 'Максимальная точность прицеливания', price: 8000, gradient: 'linear-gradient(135deg, #ffecd2, #fcb69f)', vip: true },
-            { id: 'v5', icon: '👑', name: 'Королевский набор настроек', desc: 'Всё лучшее в одном месте', price: 15000, gradient: 'linear-gradient(135deg, #fddb92, #d1fdff)', vip: true },
-            { id: 'v6', icon: '💫', name: 'Mega Pro Collection', desc: 'Абсолютный максимум возможностей', price: 20000, gradient: 'linear-gradient(135deg, #e0c3fc, #8ec5fc)', vip: true }
-        ];
-
         function getParams() {
             const url = new URLSearchParams(window.location.search);
             USER_ID = url.get('user_id') || '';
@@ -503,40 +500,23 @@
         }
 
         function updateUI() {
-            let current = 0;
-            const target = BALANCE;
-            const duration = 1000;
-            const increment = target / (duration / 16);
-
-            function animate() {
-                current += increment;
-                if (current < target) {
-                    document.getElementById('balance').textContent = Math.floor(current).toLocaleString('ru-RU');
-                    requestAnimationFrame(animate);
-                } else {
-                    document.getElementById('balance').textContent = target.toLocaleString('ru-RU');
-                }
-            }
-            animate();
-
+            document.getElementById('balance').textContent = BALANCE.toLocaleString('ru-RU');
             document.getElementById('customId').textContent = CUSTOM_ID || '—';
             const shortId = USER_ID ? (USER_ID.length > 10 ? USER_ID.substring(0, 10) + '...' : USER_ID) : '—';
             document.getElementById('telegramId').textContent = shortId;
         }
 
-        function renderItems(items, containerId, isVIP) {
-            const container = document.getElementById(containerId);
+        function renderShop() {
+            const container = document.getElementById('items');
             container.innerHTML = '';
 
-            items.forEach(item => {
+            ITEMS.forEach(item => {
                 const bought = INVENTORY.includes(item.name);
                 const canBuy = BALANCE >= item.price && !bought;
 
                 let badge = '';
                 if (bought) {
                     badge = '<div class="item-badge badge-bought">✓ Куплено</div>';
-                } else if (isVIP) {
-                    badge = '<div class="item-badge badge-vip">👑 VIP</div>';
                 } else if (canBuy) {
                     badge = '<div class="item-badge badge-available">Доступно</div>';
                 } else {
@@ -548,9 +528,8 @@
                     footer = '<div class="bought-label"><span>✓</span><span>Куплено</span></div>';
                 } else if (canBuy) {
                     const after = BALANCE - item.price;
-                    const btnClass = isVIP ? 'buy-btn can-buy vip-buy' : 'buy-btn can-buy';
                     footer = `
-                        <button class="${btnClass}" onclick="buy('${item.id}', ${item.price}, '${item.name}')">
+                        <button class="buy-btn can-buy" onclick="buy('${item.id}', ${item.price}, '${item.name}')">
                             Купить за ${item.price.toLocaleString('ru-RU')} 💎
                         </button>
                         <div class="buy-info">Останется: ${after.toLocaleString('ru-RU')} 💎</div>
@@ -564,7 +543,7 @@
                 }
 
                 const div = document.createElement('div');
-                div.className = isVIP ? 'item vip-item' : 'item';
+                div.className = 'item';
                 div.innerHTML = `
                     <div class="item-header" style="background: ${item.gradient}">
                         <span class="item-icon">${item.icon}</span>
@@ -574,7 +553,7 @@
                         <div class="item-title">${item.name}</div>
                         <div class="item-desc">${item.desc}</div>
                         <div class="item-price-row">
-                            <div style="opacity:0.5; font-size:13px;">Цена:</div>
+                            <div style="opacity:0.5; font-size:11px;">Цена:</div>
                             <div class="item-price">
                                 <span>💎</span>
                                 <span>${item.price.toLocaleString('ru-RU')}</span>
@@ -596,29 +575,29 @@
                     <div class="empty-state">
                         <div class="empty-icon">📦</div>
                         <div class="empty-title">Склад пуст</div>
-                        <div class="empty-desc">Купите товары в магазине или VIP</div>
+                        <div class="empty-desc">Купите товары в магазине</div>
                     </div>
                 `;
                 return;
             }
 
-            const allItems = [...ITEMS, ...VIP_ITEMS];
-            INVENTORY.forEach(name => {
-                const item = allItems.find(i => i.name === name);
+            INVENTORY.forEach((name, index) => {
+                const item = ITEMS.find(i => i.name === name);
                 if (!item) return;
 
                 const div = document.createElement('div');
                 div.className = 'item';
                 div.innerHTML = `
-                    <div class="item-header" style="background: ${item.gradient}; padding: 60px 20px;">
-                        <span class="item-icon" style="font-size: 48px;">${item.icon}</span>
+                    <div class="item-header" style="background: ${item.gradient}">
+                        <span class="item-icon">${item.icon}</span>
+                        <div class="item-badge badge-bought">✓ Куплено</div>
                     </div>
                     <div class="item-body">
                         <div class="item-title">${item.name}</div>
-                        <div class="item-desc">Товар будет отправлен от @SloppyX444</div>
-                        <div class="bought-label" style="margin-top: 16px;">
-                            <span>✓</span><span>В вашем инвентаре</span>
-                        </div>
+                        <div class="item-desc">Нажмите "Получить" чтобы вывести товар</div>
+                        <button class="claim-btn" onclick="claimItem(${index}, '${item.name}')">
+                            📥 Получить товар
+                        </button>
                     </div>
                 `;
                 container.appendChild(div);
@@ -632,10 +611,10 @@
             if (tab === 'shop') {
                 document.querySelectorAll('.tab')[0].classList.add('active');
                 document.getElementById('shop-tab').classList.add('active');
+                renderShop();
             } else if (tab === 'vip') {
                 document.querySelectorAll('.tab')[1].classList.add('active');
                 document.getElementById('vip-tab').classList.add('active');
-                renderItems(VIP_ITEMS, 'vip-items', true);
             } else {
                 document.querySelectorAll('.tab')[2].classList.add('active');
                 document.getElementById('inventory-tab').classList.add('active');
@@ -667,11 +646,31 @@
                     INVENTORY.push(name);
                     localStorage.setItem(`inventory_${USER_ID}`, JSON.stringify(INVENTORY));
 
-                    document.getElementById('balance').textContent = BALANCE.toLocaleString('ru-RU');
-                    renderItems(ITEMS, 'items', false);
-                    renderItems(VIP_ITEMS, 'vip-items', true);
-                    showToast('success', `✅ "${name}" куплен!`);
+                    updateUI();
+                    renderShop();
+                    showToast('success', `✅ "${name}" куплен! Проверьте склад`);
                     tg.HapticFeedback.notificationOccurred('success');
+                }
+            });
+        };
+
+        window.claimItem = function(index, name) {
+            tg.showConfirm(`Вывести товар "${name}"? Товар будет отправлен боту для выдачи.`, ok => {
+                if (ok) {
+                    // Отправляем запрос боту на выдачу
+                    tg.sendData(JSON.stringify({
+                        action: 'claim',
+                        item_name: name,
+                        item_index: index,
+                        user_id: USER_ID,
+                        custom_id: CUSTOM_ID
+                    }));
+
+                    showToast('success', `✅ Запрос на выдачу "${name}" отправлен!`);
+                    tg.HapticFeedback.notificationOccurred('success');
+                    
+                    // Закрываем магазин
+                    setTimeout(() => tg.close(), 1500);
                 }
             });
         };
@@ -690,7 +689,7 @@
 
         getParams();
         updateUI();
-        renderItems(ITEMS, 'items', false);
+        renderShop();
 
         setTimeout(() => {
             document.getElementById('loader').classList.add('hidden');
@@ -703,3 +702,4 @@
     </script>
 </body>
 </html>
+
