@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -7,9 +8,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
@@ -17,318 +16,127 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-
         .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0a0a0a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.5s, visibility 0.5s;
-        }
-
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0a0a0a; display: flex; align-items: center;
+            justify-content: center; z-index: 9999;
+            transition: opacity 0.5s; }
         .loader.hidden { opacity: 0; visibility: hidden; }
-
         .spinner {
-            width: 60px;
-            height: 60px;
+            width: 60px; height: 60px;
             border: 4px solid rgba(255,255,255,0.1);
-            border-top-color: #ffffff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
+            border-top-color: #ffffff; border-radius: 50%;
+            animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        .container {
-            padding: 15px;
-            padding-bottom: 80px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
+        .container { padding: 15px; padding-bottom: 80px; max-width: 600px; margin: 0 auto; }
         .tabs {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 15px;
-            padding: 4px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
+            display: flex; gap: 6px; margin-bottom: 15px; padding: 4px;
+            background: rgba(255,255,255,0.03); border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05); }
         .tab {
-            flex: 1;
-            padding: 10px 6px;
-            border-radius: 10px;
-            background: transparent;
-            border: none;
-            color: rgba(255,255,255,0.5);
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
+            flex: 1; padding: 10px 6px; border-radius: 10px;
+            background: transparent; border: none;
+            color: rgba(255,255,255,0.5); font-size: 11px;
+            font-weight: 600; cursor: pointer; transition: all 0.3s;
+            text-transform: uppercase; letter-spacing: 0.5px; }
         .tab.active {
             background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
-            color: #000000;
-            box-shadow: 0 4px 20px rgba(255,255,255,0.2);
-        }
-
+            color: #000000; box-shadow: 0 4px 20px rgba(255,255,255,0.2); }
         .tab.vip.active {
             background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
-            color: #000;
-        }
-
+            color: #000; }
         .balance-card {
             background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 15px;
+            padding: 20px; border-radius: 16px; margin-bottom: 15px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.7);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-
+            border: 1px solid rgba(255,255,255,0.08); }
         .balance-label {
-            font-size: 10px;
-            opacity: 0.5;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 8px;
-        }
-
+            font-size: 10px; opacity: 0.5; text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 8px; }
         .balance-amount {
-            font-size: 36px;
-            font-weight: 900;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
-        }
-
+            font-size: 36px; font-weight: 900; margin-bottom: 15px;
+            display: flex; align-items: baseline; gap: 6px; }
         .balance-number {
             background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -1px;
-        }
-
-        .balance-suffix {
-            font-size: 16px;
-            opacity: 0.6;
-            font-weight: 600;
-        }
-
-        .user-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; letter-spacing: -1px; }
+        .balance-suffix { font-size: 16px; opacity: 0.6; font-weight: 600; }
+        .user-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .user-box {
-            background: rgba(255,255,255,0.03);
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.06);
-        }
-
+            background: rgba(255,255,255,0.03); padding: 12px;
+            border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); }
         .user-label {
-            font-size: 9px;
-            opacity: 0.4;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-        }
-
-        .user-value {
-            font-size: 16px;
-            font-weight: 700;
-        }
-
+            font-size: 9px; opacity: 0.4; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 6px; }
+        .user-value { font-size: 16px; font-weight: 700; }
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+            to { opacity: 1; transform: translateY(0); } }
         .items { display: grid; gap: 12px; }
-
         .item {
             background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            border-radius: 16px;
-            overflow: hidden;
+            border-radius: 16px; overflow: hidden;
             border: 1px solid rgba(255,255,255,0.08);
-            transition: all 0.3s;
-        }
-
+            transition: all 0.3s; }
         .item:active { transform: scale(0.98); }
-
         .item-header {
-            padding: 40px 15px;
-            text-align: center;
-            font-size: 48px;
-            position: relative;
-        }
-
+            padding: 40px 15px; text-align: center;
+            font-size: 48px; position: relative; }
         .item-icon { filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3)); }
-
         .item-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 9px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
+            position: absolute; top: 10px; right: 10px;
+            padding: 4px 10px; border-radius: 15px;
+            font-size: 9px; font-weight: 700; text-transform: uppercase; }
         .badge-bought { background: #4CAF50; color: white; }
         .badge-available { background: #2196F3; color: white; }
         .badge-unavailable { background: #666; color: #ccc; }
-
         .item-body { padding: 15px; }
-
-        .item-title {
-            font-size: 16px;
-            font-weight: 800;
-            margin-bottom: 6px;
-        }
-
-        .item-desc {
-            opacity: 0.5;
-            font-size: 11px;
-            line-height: 1.4;
-            margin-bottom: 12px;
-        }
-
+        .item-title { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+        .item-desc { opacity: 0.5; font-size: 11px; line-height: 1.4; margin-bottom: 12px; }
         .item-price-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-
-        .item-price {
-            font-size: 22px;
-            font-weight: 900;
-            display: flex;
-            gap: 6px;
-        }
-
+            display: flex; justify-content: space-between; align-items: baseline;
+            margin-bottom: 12px; padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .item-price { font-size: 22px; font-weight: 900; display: flex; gap: 6px; }
         .buy-btn {
-            width: 100%;
-            padding: 12px;
-            border-radius: 12px;
-            border: none;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
+            width: 100%; padding: 12px; border-radius: 12px; border: none;
+            font-size: 13px; font-weight: 700; cursor: pointer;
+            transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px; }
         .buy-btn.can-buy {
             background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
-            color: #000;
-        }
-
-        .buy-btn:disabled {
-            background: #333;
-            color: #666;
-            cursor: not-allowed;
-        }
-
-        .buy-info {
-            text-align: center;
-            margin-top: 8px;
-            font-size: 11px;
-            opacity: 0.5;
-        }
-
+            color: #000; }
+        .buy-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
+        .buy-info { text-align: center; margin-top: 8px; font-size: 11px; opacity: 0.5; }
         .bought-label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px;
-            background: rgba(76, 175, 80, 0.1);
-            border-radius: 12px;
-            border: 1px solid rgba(76, 175, 80, 0.3);
-            font-weight: 700;
-            font-size: 13px;
-            color: #4CAF50;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 50px 20px;
-        }
-
-        .empty-icon {
-            font-size: 60px;
-            margin-bottom: 15px;
-            opacity: 0.3;
-        }
-
-        .empty-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .empty-desc {
-            opacity: 0.5;
-            font-size: 13px;
-        }
-
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px; background: rgba(76, 175, 80, 0.1);
+            border-radius: 12px; border: 1px solid rgba(76, 175, 80, 0.3);
+            font-weight: 700; font-size: 13px; color: #4CAF50; }
+        .empty-state { text-align: center; padding: 50px 20px; }
+        .empty-icon { font-size: 60px; margin-bottom: 15px; opacity: 0.3; }
+        .empty-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+        .empty-desc { opacity: 0.5; font-size: 13px; }
         .toast {
-            position: fixed;
-            bottom: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1a1a1a;
-            padding: 14px 20px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: bottom 0.3s;
-            z-index: 10000;
+            position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
+            background: #1a1a1a; padding: 14px 20px; border-radius: 12px;
+            display: flex; align-items: center; gap: 10px;
+            transition: bottom 0.3s; z-index: 10000;
             box-shadow: 0 6px 24px rgba(0,0,0,0.6);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
+            border: 1px solid rgba(255,255,255,0.1); }
         .toast.show { bottom: 25px; }
         .toast.success { border-color: #4CAF50; }
         .toast.error { border-color: #f44336; }
     </style>
 </head>
 <body>
-    <div class="loader" id="loader">
-        <div class="spinner"></div>
-    </div>
-
+    <div class="loader" id="loader"><div class="spinner"></div></div>
     <div class="container">
         <div class="tabs">
             <button class="tab active" onclick="switchTab('shop')">🛍 Магазин</button>
             <button class="tab vip" onclick="switchTab('vip')">👑 VIP</button>
         </div>
-
         <div class="balance-card">
             <div class="balance-label">💎 Ваш баланс</div>
             <div class="balance-amount">
@@ -346,11 +154,7 @@
                 </div>
             </div>
         </div>
-
-        <div class="tab-content active" id="shop-tab">
-            <div class="items" id="items"></div>
-        </div>
-
+        <div class="tab-content active" id="shop-tab"><div class="items" id="items"></div></div>
         <div class="tab-content" id="vip-tab">
             <div class="empty-state">
                 <div class="empty-icon">👑</div>
@@ -359,22 +163,15 @@
             </div>
         </div>
     </div>
-
     <div class="toast" id="toast">
         <span id="toastIcon">✅</span>
         <span id="toastText">Успешно!</span>
     </div>
-
     <script>
         let tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
-
-        let BALANCE = 0;
-        let USER_ID = '';
-        let CUSTOM_ID = '';
-        let INVENTORY = [];
-
+        let BALANCE = 0, USER_ID = '', CUSTOM_ID = '', INVENTORY = [];
         const ITEMS = [
             { id: 'fps', icon: '📁', name: 'Файл 90 FPS', desc: 'Повышение FPS в игре', price: 1000, gradient: 'linear-gradient(135deg, #667eea, #764ba2)' },
             { id: 'pc', icon: '🖥', name: 'Мои настройки на ПК', desc: 'Оптимальные параметры для ПК', price: 1240, gradient: 'linear-gradient(135deg, #f093fb, #f5576c)' },
@@ -383,78 +180,44 @@
             { id: 'reg', icon: '🔧', name: 'Регедиты для сенсы', desc: 'Файлы реестра Windows', price: 600, gradient: 'linear-gradient(135deg, #30cfd0, #330867)' },
             { id: 'set', icon: '📱', name: 'Настройки телефона до идеала', desc: 'Профессиональная настройка', price: 1400, gradient: 'linear-gradient(135deg, #a8edea, #fed6e3)' }
         ];
-
         function getParams() {
             const url = new URLSearchParams(window.location.search);
             USER_ID = url.get('user_id') || '';
             CUSTOM_ID = url.get('custom_id') || '';
             BALANCE = parseInt(url.get('tokens')) || 0;
-            
-            const stored = localStorage.getItem(`inventory_${USER_ID}`);
-            INVENTORY = stored ? JSON.parse(stored) : [];
         }
-
         function updateUI() {
             document.getElementById('balance').textContent = BALANCE.toLocaleString('ru-RU');
             document.getElementById('customId').textContent = CUSTOM_ID || '—';
             const shortId = USER_ID ? (USER_ID.length > 10 ? USER_ID.substring(0, 10) + '...' : USER_ID) : '—';
             document.getElementById('telegramId').textContent = shortId;
         }
-
         function renderShop() {
             const container = document.getElementById('items');
             container.innerHTML = '';
-
             ITEMS.forEach(item => {
                 const bought = INVENTORY.includes(item.name);
                 const canBuy = BALANCE >= item.price && !bought;
-
                 let badge = bought ? '<div class="item-badge badge-bought">✓ Куплено</div>' :
                            canBuy ? '<div class="item-badge badge-available">Доступно</div>' :
                            '<div class="item-badge badge-unavailable">Недоступно</div>';
-
                 let footer = '';
                 if (bought) {
                     footer = '<div class="bought-label"><span>✓</span><span>Куплено</span></div>';
                 } else if (canBuy) {
-                    footer = `
-                        <button class="buy-btn can-buy" onclick="buy('${item.id}', ${item.price}, '${item.name}')">
-                            Купить за ${item.price.toLocaleString('ru-RU')} 💎
-                        </button>
-                        <div class="buy-info">Останется: ${(BALANCE - item.price).toLocaleString('ru-RU')} 💎</div>
-                    `;
+                    footer = `<button class="buy-btn can-buy" onclick="buy('${item.id}', ${item.price}, '${item.name}')">Купить за ${item.price.toLocaleString('ru-RU')} 💎</button><div class="buy-info">Останется: ${(BALANCE - item.price).toLocaleString('ru-RU')} 💎</div>`;
                 } else {
-                    footer = `
-                        <button class="buy-btn" disabled>Недостаточно токенов</button>
-                        <div class="buy-info" style="color:#ff4444;">Не хватает: ${(item.price - BALANCE).toLocaleString('ru-RU')} 💎</div>
-                    `;
+                    footer = `<button class="buy-btn" disabled>Недостаточно токенов</button><div class="buy-info" style="color:#ff4444;">Не хватает: ${(item.price - BALANCE).toLocaleString('ru-RU')} 💎</div>`;
                 }
-
                 const div = document.createElement('div');
                 div.className = 'item';
-                div.innerHTML = `
-                    <div class="item-header" style="background: ${item.gradient}">
-                        <span class="item-icon">${item.icon}</span>
-                        ${badge}
-                    </div>
-                    <div class="item-body">
-                        <div class="item-title">${item.name}</div>
-                        <div class="item-desc">${item.desc}</div>
-                        <div class="item-price-row">
-                            <div style="opacity:0.5; font-size:11px;">Цена:</div>
-                            <div class="item-price"><span>💎</span><span>${item.price.toLocaleString('ru-RU')}</span></div>
-                        </div>
-                        ${footer}
-                    </div>
-                `;
+                div.innerHTML = `<div class="item-header" style="background: ${item.gradient}"><span class="item-icon">${item.icon}</span>${badge}</div><div class="item-body"><div class="item-title">${item.name}</div><div class="item-desc">${item.desc}</div><div class="item-price-row"><div style="opacity:0.5; font-size:11px;">Цена:</div><div class="item-price"><span>💎</span><span>${item.price.toLocaleString('ru-RU')}</span></div></div>${footer}</div>`;
                 container.appendChild(div);
             });
         }
-
         window.switchTab = function(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
             if (tab === 'shop') {
                 document.querySelectorAll('.tab')[0].classList.add('active');
                 document.getElementById('shop-tab').classList.add('active');
@@ -463,33 +226,19 @@
                 document.querySelectorAll('.tab')[1].classList.add('active');
                 document.getElementById('vip-tab').classList.add('active');
             }
-
             tg.HapticFeedback.impactOccurred('light');
         };
-
         window.buy = function(id, price, name) {
             if (BALANCE < price) {
                 showToast('error', '❌ Недостаточно токенов!');
                 tg.HapticFeedback.notificationOccurred('error');
                 return;
             }
-
             tg.showConfirm(`Купить "${name}" за ${price.toLocaleString('ru-RU')} 💎?`, ok => {
                 if (ok) {
-                    tg.sendData(JSON.stringify({
-                        action: 'buy',
-                        item_id: id,
-                        price: price,
-                        title: name,
-                        user_id: USER_ID,
-                        custom_id: CUSTOM_ID
-                    }));
-
-                    // ОБНОВЛЯЕМ ЛОКАЛЬНО БЕЗ ЗАКРЫТИЯ
+                    tg.sendData(JSON.stringify({ action: 'buy', item_id: id, price: price, title: name, user_id: USER_ID, custom_id: CUSTOM_ID }));
                     BALANCE -= price;
                     INVENTORY.push(name);
-                    localStorage.setItem(`inventory_${USER_ID}`, JSON.stringify(INVENTORY));
-
                     updateUI();
                     renderShop();
                     showToast('success', `✅ "${name}" куплен! Проверьте "Мои предметы"`);
@@ -497,7 +246,6 @@
                 }
             });
         };
-
         function showToast(type, text) {
             const toast = document.getElementById('toast');
             toast.className = `toast ${type} show`;
@@ -505,19 +253,15 @@
             document.getElementById('toastText').textContent = text;
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
-
         getParams();
         updateUI();
         renderShop();
-
         setTimeout(() => document.getElementById('loader').classList.add('hidden'), 500);
-
         tg.MainButton.setText('Закрыть');
         tg.MainButton.show();
         tg.MainButton.onClick(() => tg.close());
     </script>
 </body>
 </html>
-
 
 
